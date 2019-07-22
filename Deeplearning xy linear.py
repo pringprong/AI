@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[386]:
+# In[3]:
 
 
 from tensorflow.keras.models import Sequential, Model
@@ -23,7 +23,7 @@ import mpl_toolkits.mplot3d.axes3d as p3
 random.seed()
 
 
-# In[387]:
+# In[4]:
 
 
 array_len = 100
@@ -42,7 +42,7 @@ y = x1*8+ x2*9 + 10
 print("Done.")
 
 
-# In[398]:
+# In[5]:
 
 
 #training_frac = 0.85
@@ -56,7 +56,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.15)
 print("Done.")
 
 
-# In[401]:
+# In[6]:
 
 
 model = Sequential()
@@ -67,14 +67,14 @@ model.fit(X_train, Y_train, validation_split = 0.2, batch_size=10, epochs=10000)
 # Note: sometimes this works with 5 nodes in the first layer, sometimes it doesn't
 
 
-# In[402]:
+# In[7]:
 
 
 Y_predict = model.predict(X_test)
 model.evaluate(X_test, Y_test)
 
 
-# In[403]:
+# In[8]:
 
 
 plt.plot(X_test[:,0], Y_test, linestyle='none', marker='.', color='green', label='Test data')
@@ -83,7 +83,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[404]:
+# In[9]:
 
 
 plt.plot(X_test[:,1], Y_test, linestyle='none', marker='.', color='green', label='Test data')
@@ -92,7 +92,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[405]:
+# In[10]:
 
 
 for layer in model.layers:
@@ -104,13 +104,78 @@ for layer in model.layers:
 #print(blob3)
 
 
-# In[406]:
+# In[13]:
 
 
 fig=p.figure()
 ax = p3.Axes3D(fig)
 ax.scatter(xs=X_test[:,0], ys=X_test[:,1], zs=Y_test, zdir='z', s=20, c=None, depthshade=True, color='blue')
 ax.scatter(xs=X_test[:,0], ys=X_test[:,1], zs=Y_predict, zdir='z', s=20, c=None, depthshade=True, color='red')
+#ax.legend()
+
+ax.set_xlabel('$x1$', fontsize=20)
+ax.set_ylabel('$x2$', fontsize=20)
+#ax.yaxis._axinfo['label']['space_factor'] = 3.0
+# set z ticks and labels
+#ax.set_zticks([-2, 0, 2])
+# change fontsize
+#for t in ax.zaxis.get_major_ticks(): t.label.set_fontsize(10)
+# disable auto rotation
+ax.xaxis.set_rotate_label(False)
+ax.yaxis.set_rotate_label(False)
+ax.zaxis.set_rotate_label(False) 
+ax.set_zlabel('$y$', fontsize=30, rotation = 0)
+
+
+# In[14]:
+
+
+histories = []
+
+for h in range(40):
+    print(h)
+    model = Sequential()
+    model.add(Dense(5, activation='relu', input_shape=(2,)))
+    model.add(Dense(1, activation='linear'))
+    model.compile(optimizer=Adam(lr=0.01), metrics=['accuracy'], loss='mse')
+    history = model.fit(X_train, Y_train, validation_split = 0.2, batch_size=10, epochs=2000)
+    histories.append(history)
+
+
+# In[15]:
+
+
+plt.style.use('seaborn-whitegrid')
+plt.rcParams['figure.dpi'] = 200
+#g = sns.FacetGrid(att, col="subject", col_wrap=5, height=1.5)
+for j in range(40):
+    history = histories[j]
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.yscale('log')
+plt.xlabel('epoch')
+#plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+
+# In[18]:
+
+
+import seaborn as sns
+sns.set(style="ticks", color_codes=True)
+g = sns.FacetGrid(histories[0], col="loss", col_wrap=5, height=1.5)
+
+
+# In[30]:
+
+
+at1000 = []
+for j in range(40):
+    at1000.append(histories[j].history['loss'][1000])
+at1000.sort()
+print(at1000)
 
 
 # In[ ]:
