@@ -49,24 +49,24 @@ X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.15)
 print("Done.")
 
 
-# In[324]:
+# In[351]:
 
 
 model = Sequential()
-model.add(Dense(20, activation='relu', input_shape=(1,)))
+model.add(Dense(10, activation='relu', input_shape=(1,)))
 model.add(Dense(1, activation='linear'))
 model.compile(optimizer=Adam(lr=0.001), loss='mean_absolute_error')
 model.fit(X_train, Y_train, epochs=300, validation_split=0.2, batch_size=100)
 
 
-# In[325]:
+# In[352]:
 
 
 Y_predict = model.predict(X_test)
 model.evaluate(X_test, Y_test)
 
 
-# In[326]:
+# In[353]:
 
 
 plt.style.use('seaborn-whitegrid')
