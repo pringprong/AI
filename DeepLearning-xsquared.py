@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[309]:
+# In[ ]:
 
 
 from tensorflow.keras.models import Sequential, Model
@@ -20,7 +20,7 @@ from datetime import datetime
 random.seed()
 
 
-# In[322]:
+# In[ ]:
 
 
 array_len = 10000
@@ -42,14 +42,14 @@ y = 0.25*(x**3) + 0.75*(x**2) - 1.5*x - 2
 print ("Done.")
 
 
-# In[323]:
+# In[ ]:
 
 
 X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.15)
 print("Done.")
 
 
-# In[351]:
+# In[ ]:
 
 
 model = Sequential()
@@ -59,14 +59,14 @@ model.compile(optimizer=Adam(lr=0.001), loss='mean_absolute_error')
 model.fit(X_train, Y_train, epochs=300, validation_split=0.2, batch_size=100)
 
 
-# In[352]:
+# In[ ]:
 
 
 Y_predict = model.predict(X_test)
 model.evaluate(X_test, Y_test)
 
 
-# In[353]:
+# In[ ]:
 
 
 plt.style.use('seaborn-whitegrid')
@@ -78,13 +78,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[327]:
+# In[ ]:
 
 
 print(model.get_weights())
 
 
-# In[328]:
+# In[ ]:
 
 
 #### Miscellaneous functions
@@ -109,7 +109,7 @@ def logistic(x, minimum, maximum, slope, ec50):
     return maximum + (minimum-maximum)/(1 + (x/ec50)**slope)
 
 
-# In[337]:
+# In[ ]:
 
 
 array_len = 10000
@@ -133,14 +133,14 @@ for i in range(array_len):
 print ("Done.")
 
 
-# In[338]:
+# In[ ]:
 
 
 X_train2, X_test2, Y_train2, Y_test2 = train_test_split(x2, y2, test_size=0.15)
 print("Done.")
 
 
-# In[344]:
+# In[ ]:
 
 
 model2 = Sequential()
@@ -151,14 +151,14 @@ model2.fit(X_train2, Y_train2, validation_split = 0.2, batch_size=100, epochs=30
 # Note: this does not converge 100% of the time. may have to run more than once
 
 
-# In[340]:
+# In[ ]:
 
 
 Y_predict2 = model2.predict(X_test2)
 model2.evaluate(X_test2, Y_test2)
 
 
-# In[341]:
+# In[ ]:
 
 
 plt.style.use('seaborn-whitegrid')
@@ -170,7 +170,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[342]:
+# In[ ]:
 
 
 for layer in model2.layers:

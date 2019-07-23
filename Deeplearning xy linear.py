@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[ ]:
 
 
 from tensorflow.keras.models import Sequential, Model
@@ -23,7 +23,7 @@ import mpl_toolkits.mplot3d.axes3d as p3
 random.seed()
 
 
-# In[4]:
+# In[ ]:
 
 
 array_len = 100
@@ -42,7 +42,7 @@ y = x1*8+ x2*9 + 10
 print("Done.")
 
 
-# In[5]:
+# In[ ]:
 
 
 #training_frac = 0.85
@@ -56,7 +56,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.15)
 print("Done.")
 
 
-# In[6]:
+# In[ ]:
 
 
 model = Sequential()
@@ -67,14 +67,14 @@ model.fit(X_train, Y_train, validation_split = 0.2, batch_size=10, epochs=10000)
 # Note: sometimes this works with 5 nodes in the first layer, sometimes it doesn't
 
 
-# In[7]:
+# In[ ]:
 
 
 Y_predict = model.predict(X_test)
 model.evaluate(X_test, Y_test)
 
 
-# In[8]:
+# In[ ]:
 
 
 plt.plot(X_test[:,0], Y_test, linestyle='none', marker='.', color='green', label='Test data')
@@ -83,7 +83,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[9]:
+# In[ ]:
 
 
 plt.plot(X_test[:,1], Y_test, linestyle='none', marker='.', color='green', label='Test data')
@@ -92,7 +92,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[10]:
+# In[ ]:
 
 
 for layer in model.layers:
@@ -104,7 +104,7 @@ for layer in model.layers:
 #print(blob3)
 
 
-# In[13]:
+# In[ ]:
 
 
 fig=p.figure()
@@ -127,12 +127,12 @@ ax.zaxis.set_rotate_label(False)
 ax.set_zlabel('$y$', fontsize=30, rotation = 0)
 
 
-# In[14]:
+# In[ ]:
 
 
 histories = []
-
-for h in range(40):
+num_trials = 40
+for h in range(num_trials):
     print(h)
     model = Sequential()
     model.add(Dense(5, activation='relu', input_shape=(2,)))
@@ -142,13 +142,12 @@ for h in range(40):
     histories.append(history)
 
 
-# In[15]:
+# In[ ]:
 
 
 plt.style.use('seaborn-whitegrid')
 plt.rcParams['figure.dpi'] = 200
-#g = sns.FacetGrid(att, col="subject", col_wrap=5, height=1.5)
-for j in range(40):
+for j in range(num_trials):
     history = histories[j]
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
@@ -160,22 +159,23 @@ plt.xlabel('epoch')
 plt.show()
 
 
-# In[18]:
-
-
-import seaborn as sns
-sns.set(style="ticks", color_codes=True)
-g = sns.FacetGrid(histories[0], col="loss", col_wrap=5, height=1.5)
-
-
-# In[30]:
+# In[ ]:
 
 
 at1000 = []
-for j in range(40):
+for j in range(num_trials):
     at1000.append(histories[j].history['loss'][1000])
 at1000.sort()
 print(at1000)
+
+
+# In[ ]:
+
+
+# Next: try to display the model fits using FacetGrid
+import seaborn as sns
+sns.set(style="ticks", color_codes=True)
+g = sns.FacetGrid(histories[0], col="loss", col_wrap=5, height=1.5)
 
 
 # In[ ]:
